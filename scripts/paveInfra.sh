@@ -47,10 +47,34 @@ chaos_up(){
         --parameters resourceGroupName="${nodeResourceGroup}"
 }
 
+chaos_start(){
+    export nodeResourceGroup=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['nodeResourceGroup']")
+    export subscriptionId=$(_parseJson "['properties']['outputs']['subscriptionId']['value']")
+    echo "***** STARTING Chaos Experiment *****"
+    az rest --method post \
+        --uri "https://management.azure.com/subscriptions/${subscriptionId}/resourceGroups/${nodeResourceGroup}/providers/Microsoft.Chaos/experiments/akszoneoutage/start?api-version=2023-11-01"
+    echo "***** Chaos experiment started *****"
+}
+
+chaos_stop(){
+    export nodeResourceGroup=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['nodeResourceGroup']")
+    export subscriptionId=$(_parseJson "['properties']['outputs']['subscriptionId']['value']")
+    echo "***** STOPPING Chaos Experiment *****"
+    az rest --method post \
+        --uri "https://management.azure.com/subscriptions/${subscriptionId}/resourceGroups/${nodeResourceGroup}/providers/Microsoft.Chaos/experiments/akszoneoutage/cancel?api-version=2023-11-01"
+    echo "***** Chaos experiment stopped *****"
+}
+
 ## Main
 if [ "$1" == "up" ]; then
     aks_up
     chaos_up
+
+elif [ "$1" == "start" ]; then
+    chaos_start
+
+elif [ "$1" == "stop" ]; then
+    chaos_stop
 
 elif [ "$1" == "down" ] || [ "$1" == "delete" ] ; then
     echo "***** DELETING Resource Group *****"
@@ -71,6 +95,8 @@ else
     echo "   up\t\t\t : Bring up the azure infrastructure"
     echo "   down\t\t\t : Dlete the infrastructure"
     echo "   deploy\t\t : Deploy test nginx workload"
+    echo "   start\t\t : Start the chaos experiment"
+    echo "   stop\t\t\t : Stop the chaos experiment"
     echo "   watch\t\t\t : Watch the workload"
     echo "   aks-creds\t\t : Get AKS credentials"
     exit 1

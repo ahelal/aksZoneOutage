@@ -137,3 +137,4 @@ output resourceGroup string = resourceGroupName
 output acrName string  = acrName
 output aksFQDN string  = aks.outputs.controlPlaneFQDN
 output aksName string  = clusterName
+output subscriptionId string = subscription().subscriptionId
