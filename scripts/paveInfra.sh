@@ -35,6 +35,7 @@ aks_workload_watch(){
 chaos_up(){
     # fetch node resource group and VMSS name from output of previous deployment
     export nodeResourceGroup=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['nodeResourceGroup']")
+    export subscriptionId=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['subscriptionId']")
     export aksVMSS=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['VMSS']")
 
     echo "***** CREATING Chaos studio *****" 
@@ -47,10 +48,22 @@ chaos_up(){
         --parameters resourceGroupName="${nodeResourceGroup}"
 }
 
+chaos_start(){
+    export nodeResourceGroup=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['nodeResourceGroup']")
+    export subscriptionId=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['subscriptionId']")
+    echo "***** STARTING Chaos Experiment *****"
+    az rest --method post \
+        --uri "https://management.azure.com/subscriptions/${subscriptionId}/resourceGroups/${nodeResourceGroup}/providers/Microsoft.Chaos/experiments/akszoneoutage/start\?api-version\=2023-11-01"
+    echo "***** Chaos experiment started *****"
+}
+
 ## Main
 if [ "$1" == "up" ]; then
     aks_up
     chaos_up
+
+elif [ "$1" == "start" ]; then
+    chaos_start
 
 elif [ "$1" == "down" ] || [ "$1" == "delete" ] ; then
     echo "***** DELETING Resource Group *****"
@@ -71,6 +84,7 @@ else
     echo "   up\t\t\t : Bring up the azure infrastructure"
     echo "   down\t\t\t : Dlete the infrastructure"
     echo "   deploy\t\t : Deploy test nginx workload"
+    echo "   start\t\t : Start the chaos experiment"
     echo "   watch\t\t\t : Watch the workload"
     echo "   aks-creds\t\t : Get AKS credentials"
     exit 1
