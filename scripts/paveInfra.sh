@@ -91,13 +91,13 @@ elif [ "$1" == "deploy" ]; then
     aks_workload_deploy
 else
     echo "Argumants not supported '${1}'."
-    echo "Supported arguments are" 
+    echo "Supported arguments:" 
     echo "   up\t\t\t : Bring up the azure infrastructure"
-    echo "   down\t\t\t : Dlete the infrastructure"
+    echo "   down\t\t\t : Delete the infrastructure"
     echo "   deploy\t\t : Deploy test nginx workload"
     echo "   start\t\t : Start the chaos experiment"
     echo "   stop\t\t\t : Stop the chaos experiment"
-    echo "   watch\t\t\t : Watch the workload"
+    echo "   watch\t\t : Watch the workload"
     echo "   aks-creds\t\t : Get AKS credentials"
     exit 1
 fi

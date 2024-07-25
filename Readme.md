@@ -28,12 +28,14 @@ Before executing the scripts, ensure that you are logged in to Azure by running 
 The main shell script that orchestrates all the functions is located at `./scripts/paveInfra.sh`.
 
 ```
-Supported arguments are:
-    up                    : Bring up the Azure infrastructure
-    down                  : Bring down the deployment
-    deploy                : Deploy the test nginx workload
-    watch                 : Watch the deployment
-    aks-creds             : Get AKS credentials
+Supported arguments:
+   up                    : Bring up the azure infrastructure
+   down                  : Delete the infrastructure
+   deploy                : Deploy test nginx workload
+   start                 : Start the chaos experiment
+   stop                  : Stop the chaos experiment
+   watch                 : Watch the workload
+   aks-creds             : Get AKS credentials
 ```
 
 ## Debug
