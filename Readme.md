@@ -13,6 +13,7 @@ This project utilizes Bicep files to define and deploy Azure infrastructure reso
 
 * Azure subscription with the necessary permissions to create and manage resources
 * Azure CLI (version 2.62.0 or later)
+* Azure Bicep CLI Module
 * Python 3
 * kubectl
 
@@ -31,6 +32,7 @@ Supported arguments are:
     up                    : Bring up the Azure infrastructure
     down                  : Bring down the deployment
     deploy                : Deploy the test nginx workload
+    watch                 : Watch the deployment
     aks-creds             : Get AKS credentials
 ```
 

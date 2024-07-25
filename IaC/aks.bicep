@@ -9,7 +9,7 @@ param location string
 
 @minLength(4)
 @description('Unique postfix for resources')
-param postfix string = uniqueString('${resourceGroupName}$-${location}')
+param postfix string = uniqueString('${subscription()}-${location}')
 
 @description('AKS node count')
 param nodeCount int = 3

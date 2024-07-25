@@ -19,6 +19,19 @@ aks_up(){
         --parameters resourceGroupName="${resourceGroupName}" | tee "${statusFile}"
 }
 
+aks_workload_deploy(){
+    aksGetCreds
+    kubectl apply -f "${DIR}/../workload/workload.yaml"
+    ip=$(kubectl get svc nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    echo "IP: ${ip}"
+    echo "Call http://${ip}/zone.html"
+}
+
+aks_workload_watch(){
+    aksGetCreds
+    kubectl get pods -owide -w
+}
+
 chaos_up(){
     # fetch node resource group and VMSS name from output of previous deployment
     export nodeResourceGroup=$(_parseJson "['properties']['outputs']['deploymentScriptOutput']['value']['nodeResourceGroup']")
@@ -47,12 +60,18 @@ elif [ "$1" == "down" ] || [ "$1" == "delete" ] ; then
 elif [ "$1" == "aks-creds" ]; then
     aksGetCreds
 
+elif [ "$1" == "watch" ]; then
+    aks_workload_watch
+
+elif [ "$1" == "deploy" ]; then
+    aks_workload_deploy
 else
     echo "Argumants not supported '${1}'."
     echo "Supported arguments are" 
     echo "   up\t\t\t : Bring up the azure infrastructure"
     echo "   down\t\t\t : Dlete the infrastructure"
     echo "   deploy\t\t : Deploy test nginx workload"
+    echo "   watch\t\t\t : Watch the workload"
     echo "   aks-creds\t\t : Get AKS credentials"
     exit 1
 fi
