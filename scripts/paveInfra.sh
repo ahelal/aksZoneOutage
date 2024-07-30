@@ -22,6 +22,8 @@ aks_up(){
 aks_workload_deploy(){
     aksGetCreds
     kubectl apply -f "${DIR}/../workload/workload.yaml"
+    echo "Waiting for external IP to be assigned to nginx service..."
+    sleep 30
     ip=$(kubectl get svc nginx -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
     echo "IP: ${ip}"
     echo "Call http://${ip}/zone.html"
