@@ -15,7 +15,7 @@ param postfix string = uniqueString('${subscription()}-${location}')
 param nodeCount int = 3
 
 @description('AKS node SKU')
-param nodeSku string = 'Standard_B4ms'
+param nodeSku string = 'Standard_b2s'
 
 var version = '0.1.0'
 var clusterName = 'akszoneoutage${postfix}'
