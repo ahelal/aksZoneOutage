@@ -8,7 +8,6 @@ This project utilizes Bicep files to define and deploy Azure infrastructure reso
 * Chaos experiment
 * and some helper resources
 
-
 ## Prerequisites
 
 * Azure subscription with the necessary permissions to create and manage resources
