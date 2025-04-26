@@ -1,6 +1,5 @@
 targetScope='subscription'
 
-
 param resourceGroupName string
 param vmssName string
 param location string
